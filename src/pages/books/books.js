@@ -1,3 +1,4 @@
+import React, {useState} from 'react';
 import Card from "../../components/card/card";
 import Para from "../../components/paragrapgh/para";
 import Book from "../../assets/images/book-1.jpg";
@@ -8,14 +9,26 @@ import Search from "../../components/searchBook/searchBook";
 import Footer from "../../components/footer/footer";
 // import 'bootstrap/dist/css/bootstrap.min.css'
 import Button from '@material-ui/core/Button'
+import UserModel from "../../components/model/model";
 import "./book.css";
 function Books() {
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   const handleBuy = ()=> {
+    handleClickOpen()
     console.log("buy button clicked")
   }
   return (
     <>
       <Nav />
+      <UserModel open={open} handleCloseCallBack={handleClose}/>
       <div className="books-list-hero-image">
         <div className="w-full lg:w-3/5 xl:w-3/5 2xl:w-3/5 ">
           <div className="w-full  text-center text-white text-3xl lg:text-4xl xl:text-4xl 2xl:text-4xl  font-semibold pb-4">

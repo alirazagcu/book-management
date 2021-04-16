@@ -1,5 +1,6 @@
 import { useState} from "react"
 import Para from '../../components/paragrapgh/para'
+import BookNotification from "../notificationMessage/bookNotification"
 import {
   BrowserRouter as Router,
   Switch,
@@ -26,6 +27,9 @@ function Nav(props) {
             </div>
             <div className="font-semibold w-1/5 text-right hidden lg:block xl:block 2xl:block">
                 <Para text="User Name"/>
+             </div>
+             <div className="font-semibold w-1/5 text-right hidden lg:block xl:block 2xl:block">
+                <BookNotification/>
              </div>
              <div className="hover:text-blue-500 text-xl pt-1 block lg:hidden xl:hidden 2xl:hidden" onClick={()=>{setShowMenu(true)}}>
               <p ><i class="fa fa-bars" aria-hidden="true"></i></p>
