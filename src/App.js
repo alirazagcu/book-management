@@ -4,6 +4,9 @@ import Books from './pages/books/books'
 import Addbook from './pages/addBook/addBook'
 import BookStatus from './pages/bookStatus/bookStatus'
 import "./components-builtin/@vuexy/rippleButton/RippleButton";
+import store from "./redux/store";
+import { Provider } from "react-redux";
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -14,6 +17,7 @@ import './App.css';
 
 function App() {
   return (
+    <Provider store={store}>
     <Router>
     <div className="App">
       <Switch>
@@ -25,6 +29,7 @@ function App() {
          </Switch>
     </div>
     </Router>
+    </Provider>
   );
 }
 

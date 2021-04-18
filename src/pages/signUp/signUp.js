@@ -7,17 +7,46 @@ import {
   BrowserRouter as Router,
   useHistory
 } from "react-router-dom";
+import {
+  signUpService
+} from "../../redux/actions"
+import { connect } from "react-redux";
 
-function Signup() {
+function Signup({signUpService}) {
   const history= useHistory();
-  const [value, setValue] = React.useState("buyer")
+  const [inputValueState, setInputValueState] = React.useState({
+      inputValues:{
+        first_name : "",
+        last_name : "",
+        email : "",
+        password : "",
+        confirm_password:"",
+        role :"buyer"
+    }
+  }
+  )
   const handleSubmit = (e) => {
     e.preventDefault();
-    history.push('/sign-in')
+    const {inputValues}   = inputValueState;
+    const {password, confirm_password} = inputValues
+    if(password.length >=8 && password === confirm_password && confirm_password.length >=8 ){
+      signUpService(inputValues)
+    }
+    else{
+      alert("password did match or password should be greater than 8 length");
+    }
   };
 
   const handleChange = (e) => {
-    setValue(e.target.value)
+    e.preventDefault();
+    const { name, value } = e.target;
+    const {inputValues}   = inputValueState;
+    setInputValueState({
+        inputValues: {
+            ...inputValues,
+            [name]: value,
+        }
+    })
   }
   return (
     <div className="flex">
@@ -34,24 +63,24 @@ function Signup() {
             </div>
           </div>
           <div>
-            <Input placeholder="First Name" type="text" />
+            <Input placeholder="First Name" type="text" name={"first_name"} onChange={handleChange}/>
           </div>
           <div className="pt-2">
-            <Input placeholder="Last Name" type="text" />
+            <Input placeholder="Last Name" type="text" name={"last_name"}  onChange={handleChange}/>
           </div>
           <div className="pt-2">
-            <Input placeholder="Email" type="email" />
+            <Input placeholder="Email" type="email" name={"email"}  onChange={handleChange}/>
           </div>
           <div className="pt-2">
-            <Input placeholder="Password" type="password" />
+            <Input placeholder="Password" type="password" name={"password"}  onChange={handleChange}/>
           </div>
           <div className="pt-2">
-            <Input placeholder="Confirm Password" type="password" />
+            <Input placeholder="Confirm Password" type="password" name={"confirm_password"}  onChange={handleChange}/>
           </div>
           <div className="pt-2">
-            <select value={value} onChange={handleChange} style={{background: "#111827"}} className="w-full border rounded border-gray-200 border-opacity-30 focus:outline-none focus:ring-1 focus:ring-blue-600  bg-transparent pt-2 pb-2 pl-2 outline-none text-white text-base">
+            <select  onChange={handleChange} name="role" style={{background: "#111827"}} className="w-full border rounded border-gray-200 border-opacity-30 focus:outline-none focus:ring-1 focus:ring-blue-600  bg-transparent pt-2 pb-2 pl-2 outline-none text-white text-base">
               <option value="seller">Seller</option>
-              <option value="buyer">Buyer</option>
+              <option value="buyer" selected>Buyer</option>
             </select>
           </div>
           <div className="flex justify-center pt-4">
@@ -86,4 +115,17 @@ function Signup() {
   );
 }
 
-export default Signup;
+// const mapStateToProps = (state) => {
+//   return {
+//     users: state.app.users,
+//     userRecord: state.app.importProductRecord,
+//     user: state.app.user,
+//   };
+// };
+const mapDispatchToProps = (dispatch) => {
+  return {
+    signUpService: (data) => {return dispatch(signUpService(data))},
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Signup);

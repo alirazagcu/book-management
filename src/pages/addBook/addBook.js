@@ -48,7 +48,15 @@ function Addbook(props) {
                   />
                 </div>
               </div>
-              <div className="flex justify-between items-center pt-4">
+                <div className="w-2/5 pt-4">
+                  <input
+                    type="text"
+                    placeholder="Category"
+                    required
+                    className="w-full border rounded-full bg-gray-100 border-gray-200 border-opacity-30 focus:outline-none focus:ring-1 focus:ring-blue-600  bg-transparent pt-2 pb-2 pl-2 outline-none text-black text-base"
+                  />
+                </div>
+                <div className="flex justify-between items-center pt-4">
                 <div className="w-2/5">
                   <input
                     type="text"
