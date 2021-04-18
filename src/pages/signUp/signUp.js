@@ -2,17 +2,18 @@ import React from 'react'
 import Input from "../../components/input/input";
 import google from "../../assets/images/google.png";
 import fb from "../../assets/images/fb.png";
+import { useDispatch, useSelector } from "react-redux";
 import "./signUp.css";
 import {
   BrowserRouter as Router,
   useHistory
 } from "react-router-dom";
-import {
-  signUpService
-} from "../../redux/actions"
-import { connect } from "react-redux";
+import * as Actions from "../../redux/actions"
+import reducer from "../../redux/reducers";
+import withReducer from "../../store/withReducer";
 
-function Signup({signUpService}) {
+function Signup() {
+  const dispatch = useDispatch();
   const history= useHistory();
   const [inputValueState, setInputValueState] = React.useState({
       inputValues:{
@@ -25,12 +26,25 @@ function Signup({signUpService}) {
     }
   }
   )
+
+  const add_confirmation = useSelector(
+    ({ SignUpReducers }) => SignUpReducers.signUpReducers
+  );
+  React.useEffect(() => {
+
+    // if (add_confirmation.data && add_confirmation.data.success === true) {
+      console.log(add_confirmation.data, "data")
+    // }
+
+  }, [add_confirmation, dispatch]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const {inputValues}   = inputValueState;
     const {password, confirm_password} = inputValues
     if(password.length >=8 && password === confirm_password && confirm_password.length >=8 ){
-      signUpService(inputValues)
+      dispatch(Actions.signUpService(inputValues))
+      // signUpService(inputValues)
     }
     else{
       alert("password did match or password should be greater than 8 length");
@@ -122,10 +136,6 @@ function Signup({signUpService}) {
 //     user: state.app.user,
 //   };
 // };
-const mapDispatchToProps = (dispatch) => {
-  return {
-    signUpService: (data) => {return dispatch(signUpService(data))},
-  };
-};
+export default withReducer("SignUpReducers", reducer)(Signup);
 
-export default connect(null, mapDispatchToProps)(Signup);
+// export default connect(null, mapDispatchToProps)(Signup);

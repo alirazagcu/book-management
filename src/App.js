@@ -4,7 +4,7 @@ import Books from './pages/books/books'
 import Addbook from './pages/addBook/addBook'
 import BookStatus from './pages/bookStatus/bookStatus'
 import "./components-builtin/@vuexy/rippleButton/RippleButton";
-import store from "./redux/store";
+import store from "./store/index";
 import { Provider } from "react-redux";
 
 import {
