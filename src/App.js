@@ -3,8 +3,10 @@ import Signin from './pages/signIn/signIn'
 import Books from './pages/books/books'
 import Addbook from './pages/addBook/addBook'
 import BookStatus from './pages/bookStatus/bookStatus'
+import TrackBook from './pages/bookStatus/buyerBookStatus';
 import "./components-builtin/@vuexy/rippleButton/RippleButton";
 import store from "./store/index";
+import PrivateRoute from './components/PrivateRoute';
 import { Provider } from "react-redux";
 
 import {
@@ -19,15 +21,16 @@ function App() {
   return (
     <Provider store={store}>
     <Router>
-    <div className="App">
-      <Switch>
-         <Route path="/" exact component={Signup}/>
-         <Route path="/sign-in" component={Signin}/>
-         <Route path="/books" component={Books}/>
-         <Route path="/add-book" component={Addbook}/>
-         <Route path="/book-status" component={BookStatus}/>
-         </Switch>
-    </div>
+      <div className="App">
+        <Switch>
+          <PrivateRoute component={Signup} publicValue ={true} userRole={"both"}  path="/" exact />
+          <PrivateRoute component={Books} publicValue ={false} userRole={"both"} path="/books" exact/>
+          <PrivateRoute component={Signin} publicValue ={true} userRole={"both"} path="/sign-in" exact/>
+          <PrivateRoute component={Addbook} publicValue ={false} userRole={"buyer"} path="/add-book" exact/>
+          <PrivateRoute component={BookStatus} publicValue ={false} userRole={"seller"} path="/book-status" exact/>
+          <PrivateRoute component={TrackBook} publicValue ={false} userRole={"both"} path="/book-track" exact/>
+        </Switch>
+      </div>
     </Router>
     </Provider>
   );

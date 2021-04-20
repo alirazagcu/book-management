@@ -1,6 +1,7 @@
-import { useState} from "react"
+import { useState, useEffect} from "react"
 import Para from '../../components/paragrapgh/para'
 import BookNotification from "../notificationMessage/bookNotification"
+import jwt_decode from "jwt-decode";
 import {
   BrowserRouter as Router,
   Switch,
@@ -9,6 +10,18 @@ import {
 } from "react-router-dom";
 function Nav(props) {
   const[showMenu , setShowMenu]=useState(false);
+  const [role, setRole] = useState("buyer");
+  useEffect(()=> {
+    const token = window.localStorage.getItem('token');
+    let decodedToken = {}
+    let roleFromToken = ""
+    if(token){
+        decodedToken = jwt_decode(token);
+        const {role} = decodedToken;
+        roleFromToken = role
+        setRole(roleFromToken)
+    }
+  }, [])
     return (
       <>
       
@@ -17,20 +30,35 @@ function Nav(props) {
             <div className="logo w-1/5">
                 <h1 className="text-2xl lg:text-3xl xl:text-3xl 2xl:text-3xl text-semibold">Southampton</h1>
             </div>
+            {
+              role === "seller" ?
             <div className="w-2/5 font-semibold hidden lg:block xl:block 2xl:block">
                 <ul className="flex justify-between ">
                     <li className="cursor-pointer hover:text-blue-400 border-b border-transparent hover:border-white transition duration-500 ease-in-out"><Link to="/books">Home</Link></li>
                     <li className="cursor-pointer hover:text-blue-400 border-b border-transparent hover:border-white transition duration-500 ease-in-out "><Link to="/add-book">Add Book</Link></li>
                     <li className="cursor-pointer hover:text-blue-400 border-b border-transparent hover:border-white transition duration-500 ease-in-out "><Link to="/book-status">Books status</Link></li>
+                    <li className="cursor-pointer hover:text-blue-400 border-b border-transparent hover:border-white transition duration-500 ease-in-out "><Link to="/book-track">Book Track</Link></li>
                     <li className="cursor-pointer hover:text-blue-400 border-b border-transparent hover:border-white transition duration-500 ease-in-out"><Link to="/">Sign out</Link></li>
                 </ul>
             </div>
+            : 
+            <div className="w-2/5 font-semibold hidden lg:block xl:block 2xl:block">
+                <ul className="flex justify-between ">
+                    <li className="cursor-pointer hover:text-blue-400 border-b border-transparent hover:border-white transition duration-500 ease-in-out"><Link to="/books">Home</Link></li>
+                    <li className="cursor-pointer hover:text-blue-400 border-b border-transparent hover:border-white transition duration-500 ease-in-out "><Link to="/book-track">Book Track</Link></li>
+                    <li className="cursor-pointer hover:text-blue-400 border-b border-transparent hover:border-white transition duration-500 ease-in-out"><Link to="/">Sign out</Link></li>
+                </ul>
+            </div>
+            }
             <div className="font-semibold w-1/5 text-right hidden lg:block xl:block 2xl:block">
                 <Para text="User Name"/>
              </div>
+             {
+               role === "seller" &&
              <div className="font-semibold w-1/5 text-right hidden lg:block xl:block 2xl:block">
                 <BookNotification/>
              </div>
+            }
              <div className="hover:text-blue-500 text-xl pt-1 block lg:hidden xl:hidden 2xl:hidden" onClick={()=>{setShowMenu(true)}}>
               <p ><i class="fa fa-bars" aria-hidden="true"></i></p>
                </div>
