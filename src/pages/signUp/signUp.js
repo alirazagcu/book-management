@@ -12,7 +12,7 @@ import * as Actions from "../../redux/actions"
 import reducer from "../../redux/reducers";
 import withReducer from "../../store/withReducer";
 
-function Signup() {
+function Signup(props) {
   const dispatch = useDispatch();
   const history= useHistory();
   const [inputValueState, setInputValueState] = React.useState({
@@ -27,14 +27,35 @@ function Signup() {
   }
   )
 
+
+
   const add_confirmation = useSelector(
     ({ SignUpReducers }) => SignUpReducers.signUpReducers
   );
-  React.useEffect(() => {
 
-    // if (add_confirmation.data && add_confirmation.data.success === true) {
-      console.log(add_confirmation.data, "data")
-    // }
+  const sign_in_confirmation = useSelector(
+    ({ SignUpReducers }) => SignUpReducers.signInReducers
+  )
+  React.useEffect(()=> {
+    if (props.location && props.location.state && props.location.state.from == "signOut") {
+      localStorage.clear()
+      add_confirmation.data = {};
+      sign_in_confirmation.data = {};
+      dispatch(Actions.signOut(true));
+      dispatch(Actions.resetSignIn({}));
+    }
+  }, [props.location.state])
+
+
+  React.useEffect(() => {
+    console.log(add_confirmation.data, "data")
+    if (add_confirmation.data && add_confirmation.data.success === true) {
+      localStorage.setItem('token', add_confirmation.data.user.token);
+      localStorage.setItem('userName', add_confirmation.data.user.userName);
+      history.push({
+        pathname: "/books"
+      })
+    }
 
   }, [add_confirmation, dispatch]);
 

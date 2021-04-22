@@ -3,11 +3,11 @@ import Nav from "../../components/navBar/navBar";
 import Footer from "../../components/footer/footer";
 import "./addBook.css";
 import { BrowserRouter as Router, useHistory } from "react-router-dom";
-function Addbook(props) {
+function Addbook() {
   const history = useHistory();
   const handleSubmit = (e) => {
     e.preventDefault();
-    history.push("/books");
+    // history.push("/books");
   };
 
   return (

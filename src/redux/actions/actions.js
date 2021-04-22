@@ -4,22 +4,33 @@
 import axios from 'axios';
 
 export const SIGNUP = "SIGNUP";
+export const SIGNOUT = "SIGNOUT";
+export const SIGNIN = "SIGNIN";
+export const RESET_SIGN_IN = "RESET_SIGN_IN";
 
-const baseUrl = "http://192.168.1.3:3000/api/v1/"
+const baseUrl = "http://192.168.0.108:3000/api/v1/"
 const signUp = (data) => ({
         type: SIGNUP,
         payload: data
 })
 
+export const signOut = (ms) =>({
+    type: SIGNOUT,
+    payload: ms
+})
+
+export const resetSignIn = (ms) =>({
+    type: RESET_SIGN_IN,
+    payload: ms
+})
+
 export const signUpService = (data) =>{
-    console.log("data", data);
     return (dispatch) => {
-        axios.post(`${baseUrl}user/registerUser`, data).then(res => {
+        axios.post(`${baseUrl}/user/registerUser`, data).then(res => {
             if(res.status === 200){
-                console.log("res data", res.data.user);
                     dispatch({
                         type: SIGNUP,
-                        payload: res.data.user
+                        payload: res.data
                     })
             }
             else {
@@ -31,6 +42,31 @@ export const signUpService = (data) =>{
         }).catch(e =>{
             console.log(e);
                 dispatch(signUp({}))
+        })
+    }
+}
+
+export const signInService = (data) =>{
+    return (dispatch) => {
+        axios.post(`${baseUrl}/user/signInUser`, data).then(res => {
+            if(res.status === 200){
+                    dispatch({
+                        type: SIGNIN,
+                        payload: res.data
+                    })
+            }
+            else {
+                dispatch({
+                    type: SIGNIN,
+                    payload: {}
+                })
+            }
+        }).catch(e =>{
+            console.log(e);
+            dispatch({
+                type: SIGNIN,
+                payload: {}
+            })
         })
     }
 }

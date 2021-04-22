@@ -1,3 +1,4 @@
+import React from 'react';
 import Input from "../../components/input/input";
 import google from "../../assets/images/google.png";
 import fb from "../../assets/images/fb.png";
@@ -6,13 +7,66 @@ import {
   useHistory
 } from "react-router-dom";
 import "./signIn.css";
-
+import { useDispatch, useSelector } from "react-redux";
+import * as Actions from "../../redux/actions"
+import reducer from "../../redux/reducers";
+import withReducer from "../../store/withReducer";
 function Signin() {
+  const dispatch = useDispatch();
   const history= useHistory();
+  const [inputValueState, setInputValueState] = React.useState({
+      inputValues:{
+        email : "",
+        password : ""
+    }
+  }
+  )
+
+
+  const add_confirmation = useSelector(
+    ({ SignInReducers }) => SignInReducers.signInReducers
+  );
+
+  React.useEffect(() => {
+    // dispatch(Actions.resetSignIn(true))
+    add_confirmation.data = {};
+  }, [])
+  React.useEffect(() => {
+    console.log(add_confirmation.data, "data sign in")
+    if (add_confirmation.data && add_confirmation.data.success === true) {
+      localStorage.setItem('token', add_confirmation.data.user.token);
+      localStorage.setItem('userName', add_confirmation.data.user.userName);
+      history.push({
+        pathname: "/books"
+      })
+    }
+
+  }, [add_confirmation, dispatch]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    history.push('/books')
+    const {inputValues}   = inputValueState;
+    const {password} = inputValues
+    if(password.length >=8){
+      dispatch(Actions.signInService(inputValues))
+      // signUpService(inputValues)
+    }
+    else{
+      alert("password should be greater than 8 length");
+    }
   };
+
+  const handleChange = (e) => {
+    e.preventDefault();
+    const { name, value } = e.target;
+    const {inputValues}   = inputValueState;
+    setInputValueState({
+        inputValues: {
+            ...inputValues,
+            [name]: value,
+        }
+    })
+  }
 
   return (
     <div className="flex">
@@ -29,10 +83,10 @@ function Signin() {
             </div>
           </div>
           <div>
-            <Input placeholder="Email" type="text" />
+            <Input placeholder="Email" type="text" name={"email"} onChange={handleChange} />
           </div>
           <div className="pt-2">
-            <Input placeholder="Password" type="password" />
+            <Input placeholder="Password" type="password" name={"password"} onChange={handleChange} />
           </div>
           <div className="flex justify-center pt-4">
             <button className="w-full bg-blue-600 rounded focus:outline-none pt-1 pb-1 pl-3 pr-3 text-white text-lg hover:bg-blue-500">
@@ -66,4 +120,5 @@ function Signin() {
   );
 }
 
-export default Signin;
+export default withReducer("SignInReducers", reducer)(Signin);
+

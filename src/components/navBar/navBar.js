@@ -11,8 +11,12 @@ import {
 function Nav(props) {
   const[showMenu , setShowMenu]=useState(false);
   const [role, setRole] = useState("buyer");
+  const [user_name, setUserName] = useState("User Name");
   useEffect(()=> {
     const token = window.localStorage.getItem('token');
+    if (localStorage.getItem('userName')) {
+      setUserName(localStorage.getItem('userName'));
+    }
     let decodedToken = {}
     let roleFromToken = ""
     if(token){
@@ -38,7 +42,7 @@ function Nav(props) {
                     <li className="cursor-pointer hover:text-blue-400 border-b border-transparent hover:border-white transition duration-500 ease-in-out "><Link to="/add-book">Add Book</Link></li>
                     <li className="cursor-pointer hover:text-blue-400 border-b border-transparent hover:border-white transition duration-500 ease-in-out "><Link to="/book-status">Books status</Link></li>
                     <li className="cursor-pointer hover:text-blue-400 border-b border-transparent hover:border-white transition duration-500 ease-in-out "><Link to="/book-track">Book Track</Link></li>
-                    <li className="cursor-pointer hover:text-blue-400 border-b border-transparent hover:border-white transition duration-500 ease-in-out"><Link to="/">Sign out</Link></li>
+                    <li className="cursor-pointer hover:text-blue-400 border-b border-transparent hover:border-white transition duration-500 ease-in-out"><Link to={{pathname: '/', state: {from: 'signOut'}}}>Sign out</Link></li>
                 </ul>
             </div>
             : 
@@ -46,12 +50,12 @@ function Nav(props) {
                 <ul className="flex justify-between ">
                     <li className="cursor-pointer hover:text-blue-400 border-b border-transparent hover:border-white transition duration-500 ease-in-out"><Link to="/books">Home</Link></li>
                     <li className="cursor-pointer hover:text-blue-400 border-b border-transparent hover:border-white transition duration-500 ease-in-out "><Link to="/book-track">Book Track</Link></li>
-                    <li className="cursor-pointer hover:text-blue-400 border-b border-transparent hover:border-white transition duration-500 ease-in-out"><Link to="/">Sign out</Link></li>
+                    <li className="cursor-pointer hover:text-blue-400 border-b border-transparent hover:border-white transition duration-500 ease-in-out"><Link to={{pathname: '/', state: {from: 'signOut'}}}>Sign out</Link></li>
                 </ul>
             </div>
             }
             <div className="font-semibold w-1/5 text-right hidden lg:block xl:block 2xl:block">
-                <Para text="User Name"/>
+                <Para text={user_name}/>
              </div>
              {
                role === "seller" &&
@@ -74,7 +78,7 @@ function Nav(props) {
                     <li className="cursor-pointer hover:text-blue-400 transition duration-500 ease-in-out"><Link to="/books">Home</Link></li>
                     <li className="cursor-pointer hover:text-blue-400 mt-3 transition duration-500 ease-in-out "><Link to="/add-book">Add Book</Link></li>
                     <li className="cursor-pointer hover:text-blue-400 mt-3 transition duration-500 ease-in-out "><Link to="/book-status">Book status</Link></li>
-                    <li className="cursor-pointer hover:text-blue-400 mt-3 transition duration-500 ease-in-out"><Link to="/">Sign out</Link></li>
+                    <li className="cursor-pointer hover:text-blue-400 mt-3 transition duration-500 ease-in-out"><Link to={{pathname: '/', state: {from: 'signOut'}}}>Sign out</Link></li>
                 </ul>
                 </div>
                </div>

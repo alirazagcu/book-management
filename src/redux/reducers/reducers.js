@@ -4,16 +4,58 @@ import * as Actions from "../actions";
       signUpToken : {}
   };
   
-  export const signUpReducers = (state = INITIALSTATE, action) => {
+  export const signUpReducers = (  state = {
+    isLoading: false,
+    errMsg: null,
+    data: [],
+    success: "",
+  }, action) => {
     switch (action.type) {
-    case Actions.SIGNUP:{
+    case Actions.SIGNUP:
         return{
             ...state,
-            data: action.payload
-        }
-    }
+            errMsg: null,
+            isLoading: false,
+            data: action.payload,
+            success: true,
+        };
+    case Actions.SIGNOUT:
+      return {
+        ...state,
+        errMsg: null,
+        data: {},
+        isLoading: false,
+        success: true,
+      };
       default:
         return state;
     }
   };
   
+  export const signInReducers = (  state = {
+    isLoading: false,
+    errMsg: null,
+    data: [],
+    success: "",
+  }, action) => {
+    switch (action.type) {
+    case Actions.SIGNIN:
+        return{
+            ...state,
+            errMsg: null,
+            isLoading: false,
+            data: action.payload,
+            success: true,
+        };
+        case Actions.RESET_SIGN_IN:
+          return {
+            ...state,
+            errMsg: null,
+            data: {},
+            isLoading: false,
+            success: true,
+          };
+      default:
+        return state;
+    }
+  };
