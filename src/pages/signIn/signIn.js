@@ -41,16 +41,24 @@ function Signin() {
     console.log(add_confirmation.data, "data sign in")
     if (add_confirmation.data && add_confirmation.data.success === true) {
       setIsLoading(false);
+      setIsSnackBar(true)
+      setSnackBarSverity("success")
+      setSnackBarMessage("You are successfully logged in")
       localStorage.setItem('token', add_confirmation.data.user.token);
       localStorage.setItem('userName', add_confirmation.data.user.userName);
       history.push({
         pathname: "/books"
       })
     }
-    else{
-      setIsLoading(false);
+    else if (add_confirmation.isLoading) {
+      setIsLoading(true);
     }
-
+    if (add_confirmation.errMsg) {
+      setIsSnackBar(true)
+      setSnackBarSverity("error")
+      setSnackBarMessage(add_confirmation.errMsg)
+      setIsLoading(false)
+    }
   }, [add_confirmation, dispatch]);
 
   const handleSubmit = (e) => {
@@ -59,11 +67,7 @@ function Signin() {
     const {password} = inputValues
     if(password.length >=8){
     setIsLoading(true)
-    setIsSnackBar(true)
-    setSnackBarSverity("success")
-    setSnackBarMessage("You are successfully logged in")
       dispatch(Actions.signInService(inputValues))
-      // signUpService(inputValues)
     }
     else{
       setIsSnackBar(true)

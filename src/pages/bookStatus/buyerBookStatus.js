@@ -60,27 +60,27 @@ function BookStatus(props) {
     console.log("clicked");
   }
   const data = [
-  { id: 1, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "available" },
-  { id: 2, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "available" },
-  { id: 3, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "available" },
-  { id: 4, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "sold" },
-  { id: 5, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "available" },
-  { id: 6, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "available" },
-  { id: 7, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "available" },
-  { id: 8, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "available" },
-  { id: 9, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "available" },
-  { id: 10, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "available" },
-  { id: 11, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "available" },
-  { id: 12, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "available" },
-  { id: 13, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "available" },
-  { id: 14, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "available" },
-  { id: 15, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "available" },
-  { id: 16, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "available" },
-  { id: 17, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "available" },
-  { id: 18, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "available" },
-  { id: 19, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "available" },
-  { id: 20, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "available" },
-  { id: 21, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "available" },
+  { id: 1, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "booked" },
+  { id: 2, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "booked" },
+  { id: 3, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "booked" },
+  { id: 4, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "booked" },
+  { id: 5, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "booked" },
+  { id: 6, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "booked" },
+  { id: 7, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "booked" },
+  { id: 8, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "booked" },
+  { id: 9, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "booked" },
+  { id: 10, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "booked" },
+  { id: 11, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "booked" },
+  { id: 12, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "booked" },
+  { id: 13, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "booked" },
+  { id: 14, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "booked" },
+  { id: 15, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "booked" },
+  { id: 16, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "booked" },
+  { id: 17, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "booked" },
+  { id: 18, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "booked" },
+  { id: 19, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "booked" },
+  { id: 20, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "booked" },
+  { id: 21, book_name: 'Conan the Barbarian', buyer_name: 'Ali', phone_no: '002830498230948', address: "Gazi chock" ,current_status: "booked" },
 ];
   const columns = [
     {
@@ -115,12 +115,12 @@ function BookStatus(props) {
       name : "Actions",
       cell: (row) => (
         <>
-        {row.current_status !=="booked" && (
+        {row.current_status =="booked" && (
           <>
             <Button
                 variant="contained" 
                 color="primary"
-                startIcon={<AssignmentTurnedInRoundedIcon/>}
+                // startIcon={<AssignmentTurnedInRoundedIcon/>}
                 onClick={() => connectButtonClick(row)} 
                 size="small"
             >
@@ -131,32 +131,10 @@ function BookStatus(props) {
                 variant="contained" 
                 color="secondary"
                 onClick={() => connectButtonClick(row)} 
-                startIcon={<DeleteIcon/>}
+                // startIcon={<DeleteIcon/>}
                 size="small"
             >
-                Delete
-            </Button>
-         </>
-          )}
-        {row.current_status =="booked" && (
-          <>
-            <Button
-                variant="contained" 
-                color="default"
-                onClick={() => connectButtonClick(row)} 
-                size="small"
-            >
-                available
-            </Button>
-            <Button
-                style={{margin:"1em"}}
-                variant="contained" 
-                color="primary"
-                startIcon={<AssignmentTurnedInRoundedIcon/>}
-                onClick={() => connectButtonClick(row)} 
-                size="small"
-            >
-                Sold
+                Free
             </Button>
          </>
           )}
@@ -170,7 +148,7 @@ function BookStatus(props) {
       <Nav />
       <Row>
       <Col sm="12">
-          <Card className="mt-10 mx-auto" style={{width:"80%"}}>    
+          <Card className="mt-10 mx-auto" style={{width:"90%"}}>    
             <CardHeader>
               <CardTitle style={{fontSize:"2em", textAlign:"center", fontSize:"3em"}}>Buyer Books Status</CardTitle>
             </CardHeader>

@@ -1,8 +1,4 @@
 import * as Actions from "../actions";
-
-  const INITIALSTATE = {
-      signUpToken : {}
-  };
   
   export const signUpReducers = (  state = {
     isLoading: false,
@@ -19,6 +15,30 @@ import * as Actions from "../actions";
             data: action.payload,
             success: true,
         };
+      case Actions.SIGNUP_FAILED:
+        return {
+          ...state,
+          errMsg: action.payload,
+          isLoading: false,
+          data: [],
+          success: "failed"
+        };
+      case Actions.SIGNUP_LOADING: 
+        return {
+          ...state,
+          errMsg: null,
+          isLoading: true,
+          data: [],
+          success: false
+        }
+      case Actions.RESET_SIGN_UP:
+        return {
+          ...state,
+          isLoading: false,
+          errMsg: null,
+          data: [],
+          success: ""
+        }
     case Actions.SIGNOUT:
       return {
         ...state,
@@ -47,14 +67,30 @@ import * as Actions from "../actions";
             data: action.payload,
             success: true,
         };
-        case Actions.RESET_SIGN_IN:
-          return {
-            ...state,
-            errMsg: null,
-            data: {},
-            isLoading: false,
-            success: true,
-          };
+          case Actions.SIGNIN_FAILED:
+            return {
+              ...state,
+              errMsg: action.payload,
+              isLoading: false,
+              data: [],
+              success: "failed"
+            };
+          case Actions.SINGIN_LOADING: 
+            return {
+              ...state,
+              errMsg: null,
+              isLoading: true,
+              data: [],
+              success: false
+            }
+          case Actions.RESET_SIGN_IN:
+            return {
+              ...state,
+              isLoading: false,
+              errMsg: null,
+              data: [],
+              success: ""
+            }
       default:
         return state;
     }

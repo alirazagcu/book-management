@@ -12,11 +12,15 @@ import * as Actions from "../../redux/actions"
 import reducer from "../../redux/reducers";
 import withReducer from "../../store/withReducer";
 import Loader from "../../components/Loader/Loader";
+import SnackBarMsg from "../../components/ErrorMessage/ErrorSnackBar";
 
 function Signup(props) {
   const dispatch = useDispatch();
   const history= useHistory();
   const [isLoading, setIsLoading] = useState(false)
+  const [isSnackbar, setIsSnackBar] = useState(false);
+  const [snackBarMesssage, setSnackBarMessage] = useState("");
+  const [snackBarSverity, setSnackBarSverity] = useState("error");
   const [inputValueState, setInputValueState] = React.useState({
       inputValues:{
         first_name : "",
@@ -59,6 +63,15 @@ function Signup(props) {
         pathname: "/books"
       })
     }
+    else if (add_confirmation.isLoading) {
+      setIsLoading(true);
+    }
+    if (add_confirmation.errMsg) {
+      setIsSnackBar(true)
+      setSnackBarSverity("error")
+      setSnackBarMessage(add_confirmation.errMsg)
+      setIsLoading(false)
+    }
 
   }, [add_confirmation, dispatch]);
 
@@ -72,7 +85,11 @@ function Signup(props) {
       // signUpService(inputValues)
     }
     else{
-      alert("password did match or password should be greater than 8 length");
+      setIsSnackBar(true)
+      setSnackBarSverity("error")
+      setSnackBarMessage("password did match or password should be greater than 8 length")
+      setIsLoading(false)
+      // alert("password did match or password should be greater than 8 length");
     }
   };
 
@@ -89,6 +106,7 @@ function Signup(props) {
   }
   return (
     <div>
+      {isSnackbar && <SnackBarMsg snackBarSverity={snackBarSverity} snackBarMesssage={snackBarMesssage} setIsSnackBar={setIsSnackBar}/>}
     {
       isLoading 
       ? <Loader />
