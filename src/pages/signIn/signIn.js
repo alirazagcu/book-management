@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Input from "../../components/input/input";
 import google from "../../assets/images/google.png";
 import fb from "../../assets/images/fb.png";
@@ -11,9 +11,15 @@ import { useDispatch, useSelector } from "react-redux";
 import * as Actions from "../../redux/actions"
 import reducer from "../../redux/reducers";
 import withReducer from "../../store/withReducer";
+import Loader from "../../components/Loader/Loader";
+import SnackBarMsg from "../../components/ErrorMessage/ErrorSnackBar";
 function Signin() {
   const dispatch = useDispatch();
   const history= useHistory();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSnackbar, setIsSnackBar] = useState(false);
+  const [snackBarMesssage, setSnackBarMessage] = useState("");
+  const [snackBarSverity, setSnackBarSverity] = useState("error");
   const [inputValueState, setInputValueState] = React.useState({
       inputValues:{
         email : "",
@@ -34,11 +40,15 @@ function Signin() {
   React.useEffect(() => {
     console.log(add_confirmation.data, "data sign in")
     if (add_confirmation.data && add_confirmation.data.success === true) {
+      setIsLoading(false);
       localStorage.setItem('token', add_confirmation.data.user.token);
       localStorage.setItem('userName', add_confirmation.data.user.userName);
       history.push({
         pathname: "/books"
       })
+    }
+    else{
+      setIsLoading(false);
     }
 
   }, [add_confirmation, dispatch]);
@@ -48,11 +58,17 @@ function Signin() {
     const {inputValues}   = inputValueState;
     const {password} = inputValues
     if(password.length >=8){
+    setIsLoading(true)
+    setIsSnackBar(true)
+    setSnackBarSverity("success")
+    setSnackBarMessage("You are successfully logged in")
       dispatch(Actions.signInService(inputValues))
       // signUpService(inputValues)
     }
     else{
-      alert("password should be greater than 8 length");
+      setIsSnackBar(true)
+      setSnackBarSverity("error")
+      setSnackBarMessage("password should be greater than 8 length")
     }
   };
 
@@ -69,10 +85,14 @@ function Signin() {
   }
 
   return (
-    <div className="flex">
-      <div className="hidden lg:block xl:block 2xl:block sign-in w-3/5">
-      </div>
-      <div className="w-full  lg:w-2/5 xl:w-2/5 2xl:w-2/5 h-screen bg-gray-900 shadow-lg flex flex-col justify-center items-center">
+    <div>
+      {isSnackbar && <SnackBarMsg snackBarSverity={snackBarSverity} snackBarMesssage={snackBarMesssage} setIsSnackBar={setIsSnackBar}/>}
+      {
+        isLoading? <Loader /> :
+        <div className="flex">
+        <div className="hidden lg:block xl:block 2xl:block sign-in w-3/5">
+        </div>
+        <div className="w-full  lg:w-2/5 xl:w-2/5 2xl:w-2/5 h-screen bg-gray-900 shadow-lg flex flex-col justify-center items-center">
         <form onSubmit={handleSubmit} className="w-3/5">
           <div className="flex justify-center pb-2">
             <p className="text-2xl font-semibold text-white text-lg">Sign In</p>
@@ -116,6 +136,9 @@ function Signin() {
           <p>Don't have an account yet? <span className="text-blue-600 cursor-pointer hover:text-blue-500" onClick={()=>{history.push('/')}}>Sign Up</span></p>
         </div>
       </div>
+      </div>
+      }
+      
     </div>
   );
 }
