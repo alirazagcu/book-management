@@ -1,3 +1,4 @@
+import React from 'react'
 import Signup from './pages/signUp/signUp'
 import Signin from './pages/signIn/signIn'
 import Books from './pages/books/books'
@@ -5,6 +6,7 @@ import Addbook from './pages/addBook/addBook'
 import BookStatus from './pages/bookStatus/bookStatus'
 import TrackBook from './pages/bookStatus/buyerBookStatus';
 import "./components-builtin/@vuexy/rippleButton/RippleButton";
+import setAuthorizationToken from "./utils/authorization/authorization";
 import store from "./store/index";
 import PrivateRoute from './components/PrivateRoute';
 import { Provider } from "react-redux";
@@ -18,6 +20,13 @@ import {
 import './App.css';
 
 function App() {
+
+    React.useEffect(() => {
+      if (localStorage.token) {
+        setAuthorizationToken(localStorage.token)
+      }
+    }, []);
+
   return (
     <Provider store={store}>
     <Router>

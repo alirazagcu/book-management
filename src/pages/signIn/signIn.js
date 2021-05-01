@@ -13,6 +13,9 @@ import reducer from "../../redux/reducers";
 import withReducer from "../../store/withReducer";
 import Loader from "../../components/Loader/Loader";
 import SnackBarMsg from "../../components/ErrorMessage/ErrorSnackBar";
+import setAuthorizationToken from "../../utils/authorization/authorization";
+
+
 function Signin() {
   const dispatch = useDispatch();
   const history= useHistory();
@@ -46,6 +49,8 @@ function Signin() {
       setSnackBarMessage("You are successfully logged in")
       localStorage.setItem('token', add_confirmation.data.user.token);
       localStorage.setItem('userName', add_confirmation.data.user.userName);
+      setAuthorizationToken(add_confirmation.data.user.token)
+
       history.push({
         pathname: "/books"
       })

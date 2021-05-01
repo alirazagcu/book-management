@@ -13,6 +13,7 @@ import reducer from "../../redux/reducers";
 import withReducer from "../../store/withReducer";
 import Loader from "../../components/Loader/Loader";
 import SnackBarMsg from "../../components/ErrorMessage/ErrorSnackBar";
+import setAuthorizationToken from "../../utils/authorization/authorization";
 
 function Signup(props) {
   const dispatch = useDispatch();
@@ -59,6 +60,7 @@ function Signup(props) {
       setIsLoading(false)
       localStorage.setItem('token', add_confirmation.data.user.token);
       localStorage.setItem('userName', add_confirmation.data.user.userName);
+      setAuthorizationToken(add_confirmation.data.user.token)
       history.push({
         pathname: "/books"
       })

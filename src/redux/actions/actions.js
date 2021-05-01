@@ -216,12 +216,6 @@ export const addBook = (data) => {
     newData.append("description", data.w3review)
     const request = axios.post(`${baseUrl}book/addBook`,
     newData,
-    {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-            'Authorization':`JWT ${localStorage.getItem('token')}`
-        }
-    }
     );
     return (dispatch) => {
         dispatch(addBookLoading(true));
