@@ -1,14 +1,79 @@
+import React, {useState} from 'react'
 import Para from "../../components/paragrapgh/para";
 import Nav from "../../components/navBar/navBar";
 import Footer from "../../components/footer/footer";
 import "./addBook.css";
 import { BrowserRouter as Router, useHistory } from "react-router-dom";
+import * as Actions from "../../redux/actions"
+import reducer from "../../redux/reducers";
+import withReducer from "../../store/withReducer";
+import Loader from "../../components/Loader/Loader";
+import SnackBarMsg from "../../components/ErrorMessage/ErrorSnackBar";
+import { useDispatch, useSelector } from "react-redux";
+
 function Addbook() {
   const history = useHistory();
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // history.push("/books");
-  };
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false)
+  const [isSnackbar, setIsSnackBar] = useState(false);
+  const [snackBarMesssage, setSnackBarMessage] = useState("");
+  const [snackBarSverity, setSnackBarSverity] = useState("error");
+  const [inputValueState, setInputValueState] = React.useState({
+    inputValues:{
+      image : "",
+      author_name : "",
+      category : "",
+      book_name : "",
+      w3review:"",
+  }
+}
+)
+const handleSubmit = (e) => {
+  e.preventDefault();
+  const {inputValues}   = inputValueState;
+  dispatch(Actions.addBook(inputValues))
+};
+
+const add_confirmation = useSelector(
+  ({ AddBookReducers }) => AddBookReducers.addBookReducers
+);
+
+React.useEffect(() => {
+  console.log(add_confirmation, "data")
+  if (add_confirmation && add_confirmation.data && add_confirmation.data.success === true) {
+    setIsSnackBar(true)
+    setSnackBarSverity("success")
+    setSnackBarMessage("successfully added book")
+    setIsLoading(false)
+    dispatch(Actions.resetaddBook(true))
+  }
+  else if (add_confirmation.isLoading) {
+    setIsLoading(true);
+  }
+  if (add_confirmation.errMsg) {
+    setIsSnackBar(true)
+    setSnackBarSverity("error")
+    setSnackBarMessage(add_confirmation.errMsg)
+    setIsLoading(false)
+    dispatch(Actions.resetaddBook(true))
+  }
+
+}, [add_confirmation, dispatch]);
+
+const handleChange = (e) => {
+  e.preventDefault();
+  let { name, value } = e.target;
+  if (name === 'image') {
+    value = e.target.files[0]
+  }
+  const {inputValues}   = inputValueState;
+  setInputValueState({
+      inputValues: {
+          ...inputValues,
+          [name]: value,
+      }
+  })
+}
 
   return (
     <>
@@ -26,7 +91,13 @@ function Addbook() {
           </div>
         </div>
       </div>
-      <div className="flex justify-center pt-6 lg:pt-10 xl:pt-10 2xl:pt-10 pb-12 ">
+      <div>
+      {isSnackbar && <SnackBarMsg snackBarSverity={snackBarSverity} snackBarMesssage={snackBarMesssage} setIsSnackBar={setIsSnackBar}/>}
+        {
+          isLoading 
+          ? <Loader />
+          :
+         <div className="flex justify-center pt-6 lg:pt-10 xl:pt-10 2xl:pt-10 pb-12 ">
         <div className="w-11/12  xl:w-4/5 2xl:w-2/5">
           <form className="flex justify-center" onSubmit={handleSubmit}>
             <div className="w-full ">
@@ -45,6 +116,8 @@ function Addbook() {
                     accept="image/*"
                     required
                     className="focus:outline-none w-full "
+                    name="image"
+                    onChange={handleChange}
                   />
                 </div>
               </div>
@@ -52,6 +125,8 @@ function Addbook() {
                   <input
                     type="text"
                     placeholder="Category"
+                    name="category"
+                    onChange={handleChange}
                     required
                     className="w-full border rounded-full bg-gray-100 border-gray-200 border-opacity-30 focus:outline-none focus:ring-1 focus:ring-blue-600  bg-transparent pt-2 pb-2 pl-2 outline-none text-black text-base"
                   />
@@ -61,6 +136,8 @@ function Addbook() {
                   <input
                     type="text"
                     placeholder="Book Name"
+                    name="book_name"
+                    onChange={handleChange}
                     required
                     className="w-full border rounded-full bg-gray-100 border-gray-200 border-opacity-30 focus:outline-none focus:ring-1 focus:ring-blue-600  bg-transparent pt-2 pb-2 pl-2 outline-none text-black text-base"
                   />
@@ -69,6 +146,8 @@ function Addbook() {
                   <input
                     type="text"
                     placeholder="Author Name"
+                    name="author_name"
+                    onChange={handleChange}
                     required
                     className="w-full border rounded-full bg-gray-100 border-gray-200 border-opacity-30 focus:outline-none focus:ring-1 focus:ring-blue-600  bg-transparent pt-2 pb-2 pl-2 outline-none text-black text-base"
                   />
@@ -79,6 +158,7 @@ function Addbook() {
                   <textarea
                     id="w3review"
                     name="w3review"
+                    onChange={handleChange}
                     rows="7"
                     className="resize-none w-full outline-none pl-2 pt-2 bg-gray-100 border-gray-200 border-opacity-30 focus:outline-none focus:ring-1 focus:ring-blue-600"
                     placeholder="Write Cooking Process..."
@@ -94,10 +174,10 @@ function Addbook() {
           </form>
         </div>
       </div>
-
+        }
+      </div>
       <Footer />
     </>
   );
 }
-
-export default Addbook;
+export default withReducer("AddBookReducers", reducer)(Addbook);

@@ -95,3 +95,47 @@ import * as Actions from "../actions";
         return state;
     }
   };
+
+  export const addBookReducers = (  state = {
+    isLoading: false,
+    errMsg: null,
+    data: {},
+    success: "",
+  }, action) => {
+    switch (action.type) {
+    case Actions.ADD_BOOK:
+        return{
+            ...state,
+            errMsg: null,
+            isLoading: false,
+            data: action.payload,
+            success: true,
+        };
+          case Actions.ADD_BOOK_FAILED:
+            return {
+              ...state,
+              errMsg: action.payload,
+              isLoading: false,
+              data: {},
+              success: "failed"
+            };
+          case Actions.ADD_BOOK_LOADING: 
+            return {
+              ...state,
+              errMsg: null,
+              isLoading: true,
+              data: {},
+              success: false
+            }
+          case Actions.RESET_ADD_BOOK:
+            return {
+              ...state,
+              isLoading: false,
+              errMsg: null,
+              data: {},
+              success: ""
+            }
+      default:
+        return state;
+    }
+  };
