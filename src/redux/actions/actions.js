@@ -26,6 +26,15 @@ export const ADD_BOOK_FAILED = "ADD_BOOK_FAILED"
 export const ADD_BOOK_LOADING = "ADD_BOOK_LOADING"
 export const RESET_ADD_BOOK = "RESET_ADD_BOOK"
 
+export const SEARCH_BY_FIELD = "SEARCH_BY_FIELD";
+export const SEARCH_BY_FIELD_FAILED = "SEARCH_BY_FIELD_FAILED"
+export const SEARCH_BY_FIELD_LOADING= "SEARCH_BY_FIELD_LOADING"
+export const SEARCH_BY_FIELD_RESET = "SEARCH_BY_FIELD_RESET"
+
+export const CREATE_BOOK = "CREATE_BOOK";
+export const CREATE_BOOK_FAILED = "CREATE_BOOK_FAILED"
+export const CREATE_BOOK_LOADING= "CREATE_BOOK_LOADING"
+export const CREATE_BOOK_RESET = "CREATE_BOOK_RESET"
 
 const baseUrl = "https://book-management-syatem.herokuapp.com/api/v1/"
 const localBaseUrl = "http://localhost:3000/api/v1/"
@@ -249,6 +258,110 @@ export const addBook = (data) => {
             }
             else {
                 dispatch(addBookFailed(error.message))
+            }
+        })
+    }   
+}
+
+//search by field actions
+export const searchByFieldLoading = (ms) => ({
+    type: SEARCH_BY_FIELD_LOADING,
+    payload: ms
+})
+export const searchByFieldFailed = (ms) => ({
+    type: SEARCH_BY_FIELD_FAILED,
+    payload: ms
+})
+export const searchByFieldReset = (ms) => ({
+    type: SEARCH_BY_FIELD_RESET,
+    payload: ms
+})
+
+export const searchByField = (data) => {
+    const token = window.localStorage.getItem('token');
+    const request = axios.post(`${baseUrl}book/searchByField`,
+    data
+    );
+    return (dispatch) => {
+        dispatch(searchByFieldLoading(true));
+
+        request.then((response) => {
+            if (response.status == "200") {
+                dispatch({
+                    type: SEARCH_BY_FIELD,
+                    payload: response.data
+                })
+            }
+            else {
+                throw  new Error(response.data.msg)
+            }
+        })
+        .catch((error) => {
+            if (error.response) {
+                if (error.response.status == "404" && !error.response.data) {
+                    dispatch(searchByFieldFailed(`${error.response.status}: api not found`))
+                }
+                else {
+                    dispatch(searchByFieldFailed(error.response.data.msg))
+                }
+            }
+            else if (error.request) {
+                dispatch(searchByFieldFailed("Network Error"))
+            }
+            else {
+                dispatch(searchByFieldFailed(error.message))
+            }
+        })
+    }   
+}
+
+//create book actions
+export const createBookLoading = (ms) => ({
+    type: CREATE_BOOK_LOADING,
+    payload: ms
+})
+export const createBookFailed = (ms) => ({
+    type: CREATE_BOOK_FAILED,
+    payload: ms
+})
+export const createBookReset = (ms) => ({
+    type: CREATE_BOOK_RESET,
+    payload: ms
+})
+
+export const createBook = (data) => {
+    const token = window.localStorage.getItem('token');
+    const request = axios.post(`${baseUrl}booking/createBooking`,
+    data
+    );
+    return (dispatch) => {
+        dispatch(createBookLoading(true));
+
+        request.then((response) => {
+            if (response.status == "200") {
+                dispatch({
+                    type: CREATE_BOOK,
+                    payload: response.data
+                })
+            }
+            else {
+                throw  new Error(response.data.msg)
+            }
+        })
+        .catch((error) => {
+            if (error.response) {
+                if (error.response.status == "404" && !error.response.data) {
+                    dispatch(createBookFailed(`${error.response.status}: api not found`))
+                }
+                else {
+                    dispatch(createBookFailed(error.response.data.msg))
+                }
+            }
+            else if (error.request) {
+                dispatch(createBookFailed("Network Error"))
+            }
+            else {
+                dispatch(createBookFailed(error.message))
             }
         })
     }   

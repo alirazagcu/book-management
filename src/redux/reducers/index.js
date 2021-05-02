@@ -1,10 +1,12 @@
 import { combineReducers } from "redux";
-import { signUpReducers, signInReducers, addBookReducers } from "./reducers";
+import { signUpReducers, signInReducers, addBookReducers, searchByFieldReducers, createBookReducers } from "./reducers";
 
 const reducer = combineReducers({
     signUpReducers,
     signInReducers,
-    addBookReducers
+    addBookReducers,
+    searchByFieldReducers,
+    createBookReducers
 });
 
 export default reducer;
