@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import Nav from "../../components/navBar/navBar";
 import Footer from "../../components/footer/footer";
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -8,6 +8,7 @@ import * as Icon from "react-feather";
 import { BrowserRouter as Router, useHistory } from "react-router-dom";
 import Button from '@material-ui/core/Button'
 import DataTable from 'react-data-table-component';
+import jwt_decode from "jwt-decode";
 import {
   Card,
   CardBody,
@@ -44,6 +45,16 @@ const customStyles = {
   },
 };
 function BookStatus(props) {
+  const [role, setRole] = useState("")
+
+  useEffect(()=>{
+    const token = window.localStorage.getItem('token');
+    if(token){
+        const decodedToken = jwt_decode(token);
+        const {role} = decodedToken;
+        setRole(role);
+    }
+  }, [])
   const history = useHistory();
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -143,6 +154,7 @@ function BookStatus(props) {
       ),
     }
   ];
+
   return (
     <React.Fragment>
       <Nav />
@@ -155,7 +167,7 @@ function BookStatus(props) {
             <CardBody>
               <DataTable
                 data={data}
-                columns={columns}
+                columns={role === "buyer" ? columns.pop() && columns: columns}
                 pagination
                 noHeader
                 subHeader

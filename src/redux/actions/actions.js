@@ -36,6 +36,11 @@ export const CREATE_BOOK_FAILED = "CREATE_BOOK_FAILED"
 export const CREATE_BOOK_LOADING= "CREATE_BOOK_LOADING"
 export const CREATE_BOOK_RESET = "CREATE_BOOK_RESET"
 
+export const GET_NOTIFICATION = "GET_NOTIFICATION";
+export const GET_NOTIFICATION_FAILED = "GET_NOTIFICATION_FAILED"
+export const GET_NOTIFICATION_LOADING= "GET_NOTIFICATION_LOADING"
+export const GET_NOTIFICATION_RESET = "GET_NOTIFICATION_RESET"
+
 const baseUrl = "https://book-management-syatem.herokuapp.com/api/v1/"
 const localBaseUrl = "http://localhost:3000/api/v1/"
 const signUp = (data) => ({
@@ -362,6 +367,59 @@ export const createBook = (data) => {
             }
             else {
                 dispatch(createBookFailed(error.message))
+            }
+        })
+    }   
+}
+
+
+//get notification actions
+export const getNotificationLoading = (ms) => ({
+    type: GET_NOTIFICATION_LOADING,
+    payload: ms
+})
+export const getNotificationFailed = (ms) => ({
+    type: GET_NOTIFICATION_FAILED,
+    payload: ms
+})
+export const getNotificationReset = (ms) => ({
+    type: GET_NOTIFICATION_RESET,
+    payload: ms
+})
+
+export const getNotification = (data) => {
+    const token = window.localStorage.getItem('token');
+    const request = axios.post(`${baseUrl}notification/getNotifications`,
+    data
+    );
+    return (dispatch) => {
+        dispatch(getNotificationLoading(true));
+
+        request.then((response) => {
+            if (response.status == "200") {
+                dispatch({
+                    type: GET_NOTIFICATION,
+                    payload: response.data
+                })
+            }
+            else {
+                throw  new Error(response.data.msg)
+            }
+        })
+        .catch((error) => {
+            if (error.response) {
+                if (error.response.status == "404" && !error.response.data) {
+                    dispatch(getNotificationFailed(`${error.response.status}: api not found`))
+                }
+                else {
+                    dispatch(getNotificationFailed(error.response.data.msg))
+                }
+            }
+            else if (error.request) {
+                dispatch(getNotificationFailed("Network Error"))
+            }
+            else {
+                dispatch(getNotificationFailed(error.message))
             }
         })
     }   

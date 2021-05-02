@@ -227,3 +227,47 @@ import * as Actions from "../actions";
         return state;
     }
   };
+
+  export const getNotificationReducers = (  state = {
+    isLoading: false,
+    errMsg: null,
+    data: {},
+    success: "",
+  }, action) => {
+    switch (action.type) {
+    case Actions.GET_NOTIFICATION:
+        return{
+            ...state,
+            errMsg: null,
+            isLoading: false,
+            data: action.payload,
+            success: true,
+        };
+          case Actions.GET_NOTIFICATION_FAILED:
+            return {
+              ...state,
+              errMsg: action.payload,
+              isLoading: false,
+              data: {},
+              success: "failed"
+            };
+          case Actions.GET_NOTIFICATION_LOADING: 
+            return {
+              ...state,
+              errMsg: null,
+              isLoading: true,
+              data: {},
+              success: false
+            }
+          case Actions.GET_NOTIFICATION_RESET:
+            return {
+              ...state,
+              isLoading: false,
+              errMsg: null,
+              data: {},
+              success: ""
+            }
+      default:
+        return state;
+    }
+  };

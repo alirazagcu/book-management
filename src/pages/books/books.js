@@ -17,7 +17,17 @@ import Button from '@material-ui/core/Button'
 import UserModel from "../../components/model/model";
 import Loader from "../../components/Loader/Loader";
 import SnackBarMsg from "../../components/ErrorMessage/ErrorSnackBar";
+import Pagination from '@material-ui/lab/Pagination';
+import { makeStyles } from '@material-ui/core/styles';
+
 import "./book.css";
+const useStyles = makeStyles((theme) => ({
+  root: {
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    },
+  },
+}));
 function Books() {
   const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
@@ -27,10 +37,22 @@ function Books() {
   const [snackBarMesssage, setSnackBarMessage] = useState("");
   const [snackBarSverity, setSnackBarSverity] = useState("error");
   const [isLoading, setIsLoading] = useState(false);
+  const [currentPage, setPage] = React.useState(1);
+  const [totalLength, setTotalLength]= React.useState(0);
+  const [totalPages, setTotalPages] = React.useState(0);
+  const [defaultBooks , setDefaultBooks] = useState([])
 
+  const classes = useStyles();
+  const TOTAL_ITEM_PER_PAGE = 13;
+  
   const add_confirmation = useSelector(
     ({ searchByFieldReducer }) => searchByFieldReducer.searchByFieldReducers
   );
+
+
+  const handleChange = (event, value) => {
+    setPage(value);
+  };
 
   useEffect(()=>{
     if (localStorage.token) {
@@ -42,12 +64,16 @@ function Books() {
   const onSearchClickHandler = (inputValues) =>{
     setIsLoading(true);
     dispatch(Actions.searchByField({...inputValues}))
+    setPage(1)
   }
   useEffect(() => {
     setIsSnackBar(false)
     if (add_confirmation && add_confirmation.data && add_confirmation.data.success === true) {
       const booksRows = chunkBooks(add_confirmation.data.response, 5)
-      setBooksRows(booksRows)
+      setDefaultBooks(add_confirmation.data.response)
+      setTotalLength(add_confirmation.data.response.length)
+      const totalPages = Math.ceil(add_confirmation.data.response.length / TOTAL_ITEM_PER_PAGE);
+      setTotalPages(totalPages)
       if(add_confirmation.data.response && add_confirmation.data.response.length > 0){
         setIsSnackBar(true)
         setSnackBarSverity("success")
@@ -72,7 +98,28 @@ function Books() {
     }
   
   }, [add_confirmation, dispatch]);
-  
+
+  useEffect(() => {
+    let startIndex = 0;
+    let endIndex = 0;
+    if (endIndex > totalLength) {
+      endIndex = totalLength - 1;
+    }
+    if (currentPage-1 === 0) {
+      startIndex = 0;
+      endIndex = TOTAL_ITEM_PER_PAGE;
+    }
+    else{
+      startIndex = (currentPage-1) * TOTAL_ITEM_PER_PAGE;
+      endIndex =
+        ((currentPage-1) * TOTAL_ITEM_PER_PAGE - 1) + (TOTAL_ITEM_PER_PAGE + 1);
+    }
+    const perPageHF = defaultBooks.slice(startIndex, endIndex);
+    
+    const chunkedBooks = chunkBooks(perPageHF, 5)
+    setBooksRows(chunkedBooks);
+  }, [currentPage, defaultBooks]);
+
   const chunkBooks = (books, chunk_size)=>{
     var index = 0;
     var chunkedArray = [];
@@ -248,7 +295,16 @@ function Books() {
           )
         })
       }
-      </div> 
+      {
+       defaultBooks && defaultBooks.length >0 && <div style={{marginTop: "20px", marginBottom: "20px", display: "flex", alignItems: "center",
+        justifyContent: "center" }}>
+          <div className={classes.root}>
+            <Pagination variant="outlined" color="secondary" count={totalPages} page={currentPage} onChange={handleChange} />
+          </div>
+        </div> 
+      
+        }
+      </div>
       }
       <Footer />
       <Chatboot />
