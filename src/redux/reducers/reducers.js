@@ -139,3 +139,179 @@ import * as Actions from "../actions";
         return state;
     }
   };
+
+  export const getAllBooksByUserReducers = (  state = {
+    isLoading: false,
+    errMsg: null,
+    data: {},
+    success: "",
+  }, action) => {
+    switch (action.type) {
+    case Actions.GET_BOOKS_BY_USER:
+        return{
+            ...state,
+            errMsg: null,
+            isLoading: false,
+            data: action.payload,
+            success: true,
+        };
+          case Actions.GET_BOOKS_BY_USER_FAILDED:
+            return {
+              ...state,
+              errMsg: action.payload,
+              isLoading: false,
+              data: {},
+              success: "failed"
+            };
+          case Actions.GET_BOOKS_BY_USER_LOADING: 
+            return {
+              ...state,
+              errMsg: null,
+              isLoading: true,
+              data: {},
+              success: false
+            }
+          case Actions.RESET_GET_BOOKS_BY_USER:
+            return {
+              ...state,
+              isLoading: false,
+              errMsg: null,
+              data: {},
+              success: ""
+            }
+      default:
+        return state;
+    }
+  };
+
+  export const updateBookStatusReducers = (  state = {
+    isLoading: false,
+    errMsg: null,
+    data: {},
+    success: "",
+  }, action) => {
+    switch (action.type) {
+    case Actions.UPDATE_BOOK_STATUS:
+        return{
+            ...state,
+            errMsg: null,
+            isLoading: false,
+            data: action.payload,
+            success: true,
+        };
+          case Actions.GET_BOOKS_BY_USER_FAILDED:
+            return {
+              ...state,
+              errMsg: action.payload,
+              isLoading: false,
+              data: {},
+              success: "failed"
+            };
+          case Actions.GET_BOOKS_BY_USER_LOADING: 
+            return {
+              ...state,
+              errMsg: null,
+              isLoading: true,
+              data: {},
+              success: false
+            }
+          case Actions.RESET_GET_BOOKS_BY_USER:
+            return {
+              ...state,
+              isLoading: false,
+              errMsg: null,
+              data: {},
+              success: ""
+            }
+          case Actions.DELETE_BOOK:
+            return {
+              ...state,
+              isLoading: false,
+              errMsg: null,
+              data: action.payload,
+              success: true
+            }
+      default:
+        return state;
+    }
+  };
+  
+  export const getBookedBooksReducers = (  state = {
+    isLoading: false,
+    errMsg: null,
+    data: {},
+    success: "",
+  }, action) => {
+    switch (action.type) {
+    case Actions.GET_BOOKED_BOOKS:
+        return{
+            ...state,
+            errMsg: null,
+            isLoading: false,
+            data: action.payload,
+            success: true,
+        };
+          case Actions.GET_BOOKS_BY_USER_FAILDED:
+            return {
+              ...state,
+              errMsg: action.payload,
+              isLoading: false,
+              data: {},
+              success: "failed"
+            };
+          case Actions.GET_BOOKS_BY_USER_LOADING: 
+            return {
+              ...state,
+              errMsg: null,
+              isLoading: true,
+              data: {},
+              success: false
+            }
+          case Actions.RESET_GET_BOOKS_BY_USER:
+            return {
+              ...state,
+              isLoading: false,
+              errMsg: null,
+              data: {},
+              success: ""
+            }
+      default:
+        return state;
+    }
+  };
+
+  export const updateBookingStatusReducers = (  state = {
+    isLoading: false,
+    errMsg: null,
+    data: {},
+    success: "",
+  }, action) => {
+    switch (action.type) {
+    case Actions.UPDATE_BOOKING_STATUS:
+        return{
+            ...state,
+            errMsg: null,
+            isLoading: false,
+            data: action.payload,
+            success: true,
+        };
+          case Actions.UPDATE_BOOKING_STATUS_FAILED:
+            return {
+              ...state,
+              errMsg: action.payload,
+              isLoading: false,
+              data: {},
+              success: "failed"
+            };
+          case Actions.UPDATE_BOOKING_STATUS_LOADING: 
+            return {
+              ...state,
+              errMsg: null,
+              isLoading: true,
+              data: {},
+              success: false
+            }
+      default:
+        return state;
+    }
+  };

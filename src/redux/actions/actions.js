@@ -22,10 +22,22 @@ export const RESET_GET_BOOKS = "RESET_GET_BOOKS"
 
 
 export const ADD_BOOK = "ADD_BOOK";
-export const ADD_BOOK_FAILED = "ADD_BOOK_FAILED"
-export const ADD_BOOK_LOADING = "ADD_BOOK_LOADING"
-export const RESET_ADD_BOOK = "RESET_ADD_BOOK"
+export const ADD_BOOK_FAILED = "ADD_BOOK_FAILED";
+export const ADD_BOOK_LOADING = "ADD_BOOK_LOADING";
+export const RESET_ADD_BOOK = "RESET_ADD_BOOK";
 
+export const GET_BOOKS_BY_USER = "GET_BOOKS_BY_USER";
+export const GET_BOOKS_BY_USER_FAILDED = "GET_BOOKS_BY_USER_FAILDED";
+export const GET_BOOKS_BY_USER_LOADING = "GET_BOOKS_BY_USER_LOADING";
+export const RESET_GET_BOOKS_BY_USER = "RESET_GET_BOOKS_BY_USER";
+
+export const UPDATE_BOOK_STATUS = "UPDATE_BOOK_STATUS";
+
+export const DELETE_BOOK = "DELETE_BOOK";
+
+export const GET_BOOKED_BOOKS = "GET_BOOKED_BOOKS";
+
+export const UPDATE_BOOKING_STATUS = "UPDATE_BOOKING_STATUS";
 
 const baseUrl = "https://book-management-syatem.herokuapp.com/api/v1/"
 const localBaseUrl = "http://localhost:3000/api/v1/"
@@ -48,10 +60,12 @@ export const signUpLoading = (ms) => ({
     payload: ms
 })
 
+
 export const signOut = (ms) =>({
     type: SIGNOUT,
     payload: ms
 })
+
 
 export const resetSignIn = (ms) =>({
     type: RESET_SIGN_IN,
@@ -66,6 +80,7 @@ export const signInLoading = (ms) => ({
     payload: ms
 })
 
+
 export const getBooksLoading = (ms) => ({
     type: GET_BOOKS_LOADING,
     payload: ms
@@ -79,6 +94,7 @@ export const resetBooks = (ms) => ({
     payload: ms
 })
 
+
 export const addBookLoading = (ms) => ({
     type: ADD_BOOK_LOADING,
     payload: ms
@@ -91,6 +107,20 @@ export const resetaddBook = (ms) => ({
     type: RESET_ADD_BOOK,
     payload: ms
 })
+
+export const getUserBooksLoadings = (ms) => ({
+    type: GET_BOOKS_BY_USER_LOADING,
+    payload: ms
+})
+export const getUserBooksFailed = (ms) => ({
+    type: GET_BOOKS_BY_USER_FAILDED,
+    payload: ms
+})
+export const resetgetUserBooks = (ms) => ({
+    type: RESET_GET_BOOKS_BY_USER,
+    payload: ms
+})
+
 
 export const signUpService = (data) =>{
     const request = axios.post(`${baseUrl}/user/registerUser`,data);
@@ -130,6 +160,7 @@ export const signUpService = (data) =>{
     }
 }
 
+
 export const signInService = (data) =>{
     const request = axios.post(`${baseUrl}/user/signInUser`,data);
 
@@ -167,6 +198,7 @@ export const signInService = (data) =>{
         })
     }
 }
+
 
 export const getAllBooks = (data) =>{
     const request = axios.post(`${baseUrl}/books/signInUser`,data);
@@ -252,4 +284,203 @@ export const addBook = (data) => {
             }
         })
     }   
+}
+
+export const getAllBooksByUser = () => {
+    const request = axios.post(`${baseUrl}book/getAllBooksByUser`);
+
+    return (dispatch) => {
+        dispatch(getUserBooksLoadings(true));
+
+        request.then((response) => {
+            if (response.status == "200") {
+                dispatch({
+                    type: GET_BOOKS_BY_USER,
+                    payload: response.data
+                })
+            }
+            else {
+                throw  new Error(response.data.msg)
+            }
+        })
+        .catch((error) => {
+            // console.log(error);
+            if (error.response) {
+                if (error.response.status == "404" && !error.response.data) {
+                    dispatch(getUserBooksFailed(`${error.response.status}: api not found`))
+                }
+                else {
+                    dispatch(getUserBooksFailed(error.response.data.msg))
+                }
+            }
+            else if (error.request) {
+                dispatch(getUserBooksFailed("Network Error"))
+            }
+            else {
+                dispatch(getUserBooksFailed(error.message))
+            }
+        })
+    }
+}
+
+export const updateBookstatus = (data) => {
+    const request = axios.post(`${baseUrl}book/updateBookStatus`, data);
+
+    return (dispatch) => {
+        dispatch(getUserBooksLoadings(true));
+
+        request.then((response) => {
+            if (response.status == "200") {
+                dispatch({
+                    type: UPDATE_BOOK_STATUS,
+                    payload: response.data
+                })
+            }
+            else {
+                throw  new Error(response.data.msg)
+            }
+        })
+        .catch((error) => {
+            // console.log(error);
+            if (error.response) {
+                if (error.response.status == "404" && !error.response.data) {
+                    dispatch(getUserBooksFailed(`${error.response.status}: api not found`))
+                }
+                else {
+                    dispatch(getUserBooksFailed(error.response.data.msg))
+                }
+            }
+            else if (error.request) {
+                dispatch(getUserBooksFailed("Network Error"))
+            }
+            else {
+                dispatch(getUserBooksFailed(error.message))
+            }
+        })
+    }
+}
+
+export const delteBook = (data) => {
+    const request = axios.post(`${baseUrl}book/deleteBook`, data);
+
+    return (dispatch) => {
+        dispatch(getUserBooksLoadings(true));
+
+        request.then((response) => {
+            if (response.status == "200") {
+                dispatch({
+                    type: DELETE_BOOK,
+                    payload: response.data
+                })
+            }
+            else {
+                throw  new Error(response.data.msg)
+            }
+        })
+        .catch((error) => {
+            // console.log(error);
+            if (error.response) {
+                if (error.response.status == "404" && !error.response.data) {
+                    dispatch(getUserBooksFailed(`${error.response.status}: api not found`))
+                }
+                else {
+                    dispatch(getUserBooksFailed(error.response.data.msg))
+                }
+            }
+            else if (error.request) {
+                dispatch(getUserBooksFailed("Network Error"))
+            }
+            else {
+                dispatch(getUserBooksFailed(error.message))
+            }
+        })
+    }
+}
+
+export const getBookedBooks = (data) => {
+    const request = axios.post(`${baseUrl}booking/getAllBookingsByUser`);
+
+    return (dispatch) => {
+        dispatch(getUserBooksLoadings(true));
+
+        request.then((response) => {
+            console.log(response, 'response')
+            if (response.status == "200") {
+                dispatch({
+                    type: GET_BOOKED_BOOKS,
+                    payload: response.data
+                })
+            }
+            else {
+                throw  new Error(response.data.msg)
+            }
+        })
+        .catch((error) => {
+            // console.log(error);
+            if (error.response) {
+                if (error.response.status == "404" && !error.response.data) {
+                    dispatch(getUserBooksFailed(`${error.response.status}: api not found`))
+                }
+                else {
+                    dispatch(getUserBooksFailed(error.response.data.msg))
+                }
+            }
+            else if (error.request) {
+                dispatch(getUserBooksFailed("Network Error"))
+            }
+            else {
+                dispatch(getUserBooksFailed(error.message))
+            }
+        })
+    }
+}
+
+export const UPDATE_BOOKING_STATUS_LOADING = "UPDATE_BOOKING_STATUS_LOADING";
+export const UPDATE_BOOKING_STATUS_FAILED = "UPDATE_BOOKING_STATUS_FAILED";
+
+export const updateBookingStatusLoading = (ms) => ({
+    type: UPDATE_BOOKING_STATUS_LOADING,
+    payload: ms
+})
+
+export const updateBookingStatusFailed = (ms) => ({
+    type: UPDATE_BOOKING_STATUS_FAILED,
+    payload: ms
+})
+export const updateBookingStatus = (data) => {
+    const request = axios.post(`${baseUrl}booking/updateBookingStatus`, data);
+
+    return (dispatch) => {
+        dispatch(updateBookingStatusLoading(true));
+
+        request.then((response) => {
+            console.log(response, 'response')
+            if (response.status == "200") {
+                dispatch({
+                    type: UPDATE_BOOKING_STATUS,
+                    payload: response.data
+                })
+            }
+            else {
+                throw  new Error(response.data.msg)
+            }
+        })
+        .catch((error) => {
+            // console.log(error);
+            if (error.response) {
+                if (error.response.status == "404" && !error.response.data) {
+                    dispatch(updateBookingStatusFailed(`${error.response.status}: api not found`))
+                }
+                else {
+                    dispatch(updateBookingStatusFailed(error.response.data.msg))
+                }
+            }
+            else if (error.request) {
+                dispatch(updateBookingStatusFailed("Network Error"))
+            }
+            else {
+                dispatch(updateBookingStatusFailed(error.message))
+            }
+        })
+    }
 }

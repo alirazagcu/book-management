@@ -9,6 +9,7 @@ import reducer from "../../redux/reducers";
 import withReducer from "../../store/withReducer";
 import Loader from "../../components/Loader/Loader";
 import SnackBarMsg from "../../components/ErrorMessage/ErrorSnackBar";
+import setAuthorizationToken from "../../utils/authorization/authorization";
 import { useDispatch, useSelector } from "react-redux";
 
 function Addbook() {
@@ -28,6 +29,11 @@ function Addbook() {
   }
 }
 )
+React.useEffect(() => {
+  if (localStorage.token) {
+    setAuthorizationToken(localStorage.token)
+  }
+}, []);
 const handleSubmit = (e) => {
   e.preventDefault();
   const {inputValues}   = inputValueState;

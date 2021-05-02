@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Nav from "../../components/navBar/navBar";
 import Footer from "../../components/footer/footer";
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -8,6 +8,14 @@ import * as Icon from "react-feather";
 import { BrowserRouter as Router, useHistory } from "react-router-dom";
 import Button from '@material-ui/core/Button'
 import DataTable from 'react-data-table-component';
+import * as Actions from "../../redux/actions"
+import reducer from "../../redux/reducers";
+import withReducer from "../../store/withReducer";
+import Loader from "../../components/Loader/Loader";
+import SnackBarMsg from "../../components/ErrorMessage/ErrorSnackBar";
+import { useDispatch, useSelector } from "react-redux";
+import setAuthorizationToken from "../../utils/authorization/authorization";
+
 import {
   Card,
   CardBody,
@@ -21,6 +29,7 @@ import {
   Alert,
   UncontrolledTooltip
 } from "reactstrap";
+
 const customStyles = {
   headRow: {
     style: {
@@ -49,42 +58,81 @@ const customStyles = {
   },
 };
 function BookStatus(props) {
+  const [isLoading, setIsLoading] = useState(false)
+  const [isSnackbar, setIsSnackBar] = useState(false);
+  const [snackBarMesssage, setSnackBarMessage] = useState("");
+  const [snackBarSverity, setSnackBarSverity] = useState("error");
+  React.useEffect(() => {
+    setIsLoading(true)
+    if (localStorage.token) {
+      setAuthorizationToken(localStorage.token)
+    }
+    dispatch(Actions.getAllBooksByUser())
+  }, []);
+  const dispatch = useDispatch();
+  const add_confirmation = useSelector(
+    ({ BookStatusReducers }) => BookStatusReducers.getAllBooksByUserReducers
+  );
+  const book_status_confirmation = useSelector(
+    ({ BookStatusReducers }) => BookStatusReducers.updateBookStatusReducers
+  )
+
+  React.useEffect(() => {
+    console.log(add_confirmation, "data")
+    if (add_confirmation && add_confirmation.data && add_confirmation.data.success === true) {
+      setIsLoading(false)
+    }
+    else if (add_confirmation.isLoading) {
+      setIsLoading(true);
+    }
+    if (add_confirmation.errMsg) {
+      setIsSnackBar(true)
+      setSnackBarSverity("error")
+      setSnackBarMessage(add_confirmation.errMsg)
+      setIsLoading(false)
+    }
+  
+  }, [add_confirmation, dispatch]);
+
+  React.useEffect(() => {
+    console.log(book_status_confirmation, "BOOK")
+    if (book_status_confirmation && book_status_confirmation.data && book_status_confirmation.data.success === true) {
+        setIsSnackBar(true)
+        setSnackBarSverity("success")
+        setSnackBarMessage(book_status_confirmation.data.response)
+        setIsLoading(false)
+        dispatch(Actions.resetaddBook(true))
+       dispatch(Actions.getAllBooksByUser())
+
+    }
+    else if (book_status_confirmation.isLoading) {
+      setIsLoading(true);
+    }
+    if (book_status_confirmation.errMsg) {
+      setIsSnackBar(true);
+      setSnackBarSverity("error");
+      setSnackBarMessage(add_confirmation.errMsg);
+      setIsLoading(false);
+    }
+  
+  }, [book_status_confirmation, dispatch]);
+
   const history = useHistory();
   const handleSubmit = (e) => {
     e.preventDefault();
     history.push("/books");
   };
 
-  const connectButtonClick = (data) => {
-    console.log(data);
-    console.log("clicked");
+  const soldButtonClick = (data) => {
+    console.log("clicked", data);
+
+    dispatch(Actions.updateBookstatus({book_id: data.id, status:'sold'}))
   };
 
 
-  const disconnectButtonClick = (data) => {
-    console.log("clicked");
+  const deleteButtonClick = (data) => {
+    dispatch(Actions.delteBook({book_id: data.id}))
   }
-  const data = [
-  { id: 1, book_name: 'Conan the Barbarian', author_name: 'Ali', current_status: "available" },
-  { id: 2, book_name: 'Conan the Barbarian', author_name: 'Ali', current_status: "available" },
-  { id: 3, book_name: 'Conan the Barbarian', author_name: 'Ali', current_status: "booked" },
-  { id: 4, book_name: 'Conan the Barbarian', author_name: 'Ali', current_status: "available" },
-  { id: 5, book_name: 'Conan the Barbarian', author_name: 'Ali', current_status: "available" },
-  { id: 6, book_name: 'Conan the Barbarian', author_name: 'Ali', current_status: "available" },
-  { id: 7, book_name: 'Conan the Barbarian', author_name: 'Ali', current_status: "available" },
-  { id: 8, book_name: 'Conan the Barbarian', author_name: 'Ali', current_status: "sold" },
-  { id: 9, book_name: 'Conan the Barbarian', author_name: 'Ali', current_status: "available" },
-  { id: 10, book_name: 'Conan the Barbarian', author_name: 'Ali', current_status: "available" },
-  { id: 11, book_name: 'Conan the Barbarian', author_name: 'Ali', current_status: "available" },
-  { id: 12, book_name: 'Conan the Barbarian', author_name: 'Ali', current_status: "available" },
-  { id: 13, book_name: 'Conan the Barbarian', author_name: 'Ali', current_status: "available" },
-  { id: 14, book_name: 'Conan the Barbarian', author_name: 'Ali', current_status: "available" },
-  { id: 15, book_name: 'Conan the Barbarian', author_name: 'Ali', current_status: "available" },
-  { id: 16, book_name: 'Conan the Barbarian', author_name: 'Ali', current_status: "available" },
-  { id: 17, book_name: 'Conan the Barbarian', author_name: 'Ali', current_status: "available" },
-  { id: 18, book_name: 'Conan the Barbarian', author_name: 'Ali', current_status: "available" },
-
-];
   const columns = [
     {
       name: 'Book Name',
@@ -99,47 +147,29 @@ function BookStatus(props) {
     },
     {
       name: "Current Status",
-      selector: 'current_status',
+      selector: 'status',
       sortable: true,
     },
     {
       name : "Actions",
       cell: (row) => (
         <>
-        {row.current_status !=="booked" && (
+        {row.status !=="booked" && (
           <>
                     <Button
                     variant="contained" 
                     color="primary"
                     startIcon={<AssignmentTurnedInRoundedIcon/>}
-                    onClick={() => connectButtonClick(row)} 
+                    onClick={() => soldButtonClick(row)} 
                     size="small">Sold
                     </Button>
                     <Button
                     style={{margin:"1em"}}
                     variant="contained" 
                     color="secondary"
-                    onClick={() => connectButtonClick(row)} 
+                    onClick={() => deleteButtonClick(row)} 
                     startIcon={<DeleteIcon/>}
                     size="small">Delete
-                    </Button>
-         </>
-          )}
-                  {row.current_status =="booked" && (
-          <>
-                    <Button
-                    variant="contained" 
-                    color="default"
-                    onClick={() => connectButtonClick(row)} 
-                    size="small">available
-                    </Button>
-                    <Button
-                    style={{margin:"1em"}}
-                    variant="contained" 
-                    color="primary"
-                    startIcon={<AssignmentTurnedInRoundedIcon/>}
-                    onClick={() => connectButtonClick(row)} 
-                    size="small">Sold
                     </Button>
          </>
           )}
@@ -152,6 +182,11 @@ function BookStatus(props) {
     <React.Fragment>
       <Nav />
       <Row>
+      {isSnackbar && <SnackBarMsg snackBarSverity={snackBarSverity} snackBarMesssage={snackBarMesssage} setIsSnackBar={setIsSnackBar}/>}
+        {
+        isLoading 
+        ? <Loader />
+        :
       <Col sm="12">
           <Card className="mt-10 mx-auto" style={{width:"80%"}}>    
             <CardHeader>
@@ -159,7 +194,7 @@ function BookStatus(props) {
             </CardHeader>
             <CardBody>
               <DataTable
-                data={data}
+                data={add_confirmation && add_confirmation.data.success === true && add_confirmation.data.books}
                 columns={columns}
                 pagination
                 noHeader
@@ -174,10 +209,11 @@ function BookStatus(props) {
             </CardBody>
           </Card>
         </Col>
-      </Row>
+        }
+     </Row>
       <Footer />
     </React.Fragment>
   );
 }
 
-export default BookStatus;
+export default withReducer("BookStatusReducers", reducer)(BookStatus);
