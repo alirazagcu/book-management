@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Nav from "../../components/navBar/navBar";
 import Footer from "../../components/footer/footer";
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -16,6 +16,7 @@ import SnackBarMsg from "../../components/ErrorMessage/ErrorSnackBar";
 import { useDispatch, useSelector } from "react-redux";
 import setAuthorizationToken from "../../utils/authorization/authorization";
 
+import jwt_decode from "jwt-decode";
 import {
   Card,
   CardBody,
@@ -56,11 +57,15 @@ function BookStatus(props) {
   const [isSnackbar, setIsSnackBar] = useState(false);
   const [snackBarMesssage, setSnackBarMessage] = useState("");
   const [snackBarSverity, setSnackBarSverity] = useState("error");
+  const [role, setRole] = useState("")
   const dispatch = useDispatch();
   React.useEffect(() => {
     setIsLoading(true)
     if (localStorage.token) {
       setAuthorizationToken(localStorage.token)
+      const decodedToken = jwt_decode(localStorage.token);
+      const {role} = decodedToken;
+      setRole(role);
     }
     dispatch(Actions.getBookedBooks())
   }, []);
@@ -184,6 +189,7 @@ function BookStatus(props) {
       ),
     }
   ];
+
   return (
     <React.Fragment>
       <Nav />
@@ -201,7 +207,7 @@ function BookStatus(props) {
             <CardBody>
               <DataTable
                 data={add_confirmation && add_confirmation.data && add_confirmation.data.bookings}
-                columns={columns}
+                columns={role === "buyer" ? columns.pop() && columns: columns}
                 pagination
                 noHeader
                 subHeader

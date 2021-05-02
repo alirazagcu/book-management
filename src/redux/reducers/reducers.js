@@ -315,3 +315,135 @@ import * as Actions from "../actions";
         return state;
     }
   };
+
+  export const searchByFieldReducers = (  state = {
+    isLoading: false,
+    errMsg: null,
+    data: {},
+    success: "",
+  }, action) => {
+    switch (action.type) {
+    case Actions.SEARCH_BY_FIELD:
+        return{
+            ...state,
+            errMsg: null,
+            isLoading: false,
+            data: action.payload,
+            success: true,
+        };
+          case Actions.SEARCH_BY_FIELD_FAILED:
+            return {
+              ...state,
+              errMsg: action.payload,
+              isLoading: false,
+              data: {},
+              success: "failed"
+            };
+          case Actions.SEARCH_BY_FIELD_LOADING: 
+            return {
+              ...state,
+              errMsg: null,
+              isLoading: true,
+              data: {},
+              success: false
+            }
+          case Actions.SEARCH_BY_FIELD_RESET:
+            return {
+              ...state,
+              isLoading: false,
+              errMsg: null,
+              data: {},
+              success: ""
+            }
+      default:
+        return state;
+    }
+  };
+
+  export const createBookReducers = (  state = {
+    isLoading: false,
+    errMsg: null,
+    data: {},
+    success: "",
+  }, action) => {
+    switch (action.type) {
+    case Actions.CREATE_BOOK:
+        return{
+            ...state,
+            errMsg: null,
+            isLoading: false,
+            data: action.payload,
+            success: true,
+        };
+          case Actions.CREATE_BOOK_FAILED:
+            return {
+              ...state,
+              errMsg: action.payload,
+              isLoading: false,
+              data: {},
+              success: "failed"
+            };
+          case Actions.CREATE_BOOK_LOADING: 
+            return {
+              ...state,
+              errMsg: null,
+              isLoading: true,
+              data: {},
+              success: false
+            }
+          case Actions.CREATE_BOOK_RESET:
+            return {
+              ...state,
+              isLoading: false,
+              errMsg: null,
+              data: {},
+              success: ""
+            }
+      default:
+        return state;
+    }
+  };
+
+  export const getNotificationReducers = (  state = {
+    isLoading: false,
+    errMsg: null,
+    data: {},
+    success: "",
+  }, action) => {
+    switch (action.type) {
+    case Actions.GET_NOTIFICATION:
+        return{
+            ...state,
+            errMsg: null,
+            isLoading: false,
+            data: action.payload,
+            success: true,
+        };
+          case Actions.GET_NOTIFICATION_FAILED:
+            return {
+              ...state,
+              errMsg: action.payload,
+              isLoading: false,
+              data: {},
+              success: "failed"
+            };
+          case Actions.GET_NOTIFICATION_LOADING: 
+            return {
+              ...state,
+              errMsg: null,
+              isLoading: true,
+              data: {},
+              success: false
+            }
+          case Actions.GET_NOTIFICATION_RESET:
+            return {
+              ...state,
+              isLoading: false,
+              errMsg: null,
+              data: {},
+              success: ""
+            }
+      default:
+        return state;
+    }
+  };

@@ -40,7 +40,7 @@ function Nav(props) {
                 <ul className="flex justify-between ">
                     <li className="cursor-pointer hover:text-blue-400 border-b border-transparent hover:border-white transition duration-500 ease-in-out"><Link to="/books">Home</Link></li>
                     <li className="cursor-pointer hover:text-blue-400 border-b border-transparent hover:border-white transition duration-500 ease-in-out "><Link to="/add-book">Add Book</Link></li>
-                    <li className="cursor-pointer hover:text-blue-400 border-b border-transparent hover:border-white transition duration-500 ease-in-out "><Link to="/book-status">Books status</Link></li>
+                    <li className="cursor-pointer hover:text-blue-400 border-b border-transparent hover:border-white transition duration-500 ease-in-out "><Link to="/book-status">Your Books</Link></li>
                     <li className="cursor-pointer hover:text-blue-400 border-b border-transparent hover:border-white transition duration-500 ease-in-out "><Link to="/book-track">Book Track</Link></li>
                     <li className="cursor-pointer hover:text-blue-400 border-b border-transparent hover:border-white transition duration-500 ease-in-out"><Link to={{pathname: '/', state: {from: 'signOut'}}}>Sign out</Link></li>
                 </ul>
@@ -49,6 +49,7 @@ function Nav(props) {
             <div className="w-2/5 font-semibold hidden lg:block xl:block 2xl:block">
                 <ul className="flex justify-between ">
                     <li className="cursor-pointer hover:text-blue-400 border-b border-transparent hover:border-white transition duration-500 ease-in-out"><Link to="/books">Home</Link></li>
+                    <li className="cursor-pointer hover:text-blue-400 border-b border-transparent hover:border-white transition duration-500 ease-in-out "><Link to="/book-track">Book Track</Link></li>
                     <li className="cursor-pointer hover:text-blue-400 border-b border-transparent hover:border-white transition duration-500 ease-in-out"><Link to={{pathname: '/', state: {from: 'signOut'}}}>Sign out</Link></li>
                 </ul>
             </div>
@@ -76,7 +77,7 @@ function Nav(props) {
              <ul>
                     <li className="cursor-pointer hover:text-blue-400 transition duration-500 ease-in-out"><Link to="/books">Home</Link></li>
                     <li className="cursor-pointer hover:text-blue-400 mt-3 transition duration-500 ease-in-out "><Link to="/add-book">Add Book</Link></li>
-                    <li className="cursor-pointer hover:text-blue-400 mt-3 transition duration-500 ease-in-out "><Link to="/book-status">Book status</Link></li>
+                    <li className="cursor-pointer hover:text-blue-400 mt-3 transition duration-500 ease-in-out "><Link to="/book-status">Your Books</Link></li>
                     <li className="cursor-pointer hover:text-blue-400 mt-3 transition duration-500 ease-in-out"><Link to={{pathname: '/', state: {from: 'signOut'}}}>Sign out</Link></li>
                 </ul>
                 </div>

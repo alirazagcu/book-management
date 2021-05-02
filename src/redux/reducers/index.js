@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
 import { signUpReducers, signInReducers, addBookReducers,
      getAllBooksByUserReducers, updateBookStatusReducers,
-      getBookedBooksReducers, updateBookingStatusReducers } from "./reducers";
+      getBookedBooksReducers, updateBookingStatusReducers, searchByFieldReducers, createBookReducers, getNotificationReducers } from "./reducers";
 
 const reducer = combineReducers({
     signUpReducers,
@@ -10,7 +10,11 @@ const reducer = combineReducers({
     getAllBooksByUserReducers,
     updateBookStatusReducers, 
     getBookedBooksReducers,
-    updateBookingStatusReducers
+    updateBookingStatusReducers,
+    addBookReducers,
+    searchByFieldReducers,
+    createBookReducers,
+    getNotificationReducers
 });
 
 export default reducer;

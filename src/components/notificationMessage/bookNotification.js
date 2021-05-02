@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
@@ -6,6 +6,14 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import NotificationsIcon from '@material-ui/icons/Notifications';
+import * as Actions from "../../redux/actions";
+import { useDispatch, useSelector } from "react-redux";
+import reducer from "../../redux/reducers";
+import withReducer from "../../store/withReducer";
+import setAuthorizationToken from "../../utils/authorization/authorization";
+import jwt_decode from "jwt-decode";
+import Loader from "../Loader/Loader";
+import SnackBarMsg from "../ErrorMessage/ErrorSnackBar";
 
 const StyledMenu = withStyles({
   paper: {
@@ -38,8 +46,42 @@ const StyledMenuItem = withStyles((theme) => ({
   },
 }))(MenuItem);
 
-export default function CustomizedMenus() {
+function CustomizedMenus() {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSnackbar, setIsSnackBar] = useState(false);
+  const [snackBarMesssage, setSnackBarMessage] = useState("");
+  const [snackBarSverity, setSnackBarSverity] = useState("error");
+  const [notifications, setNotifications] = useState([])
+
+  const dispatch = useDispatch();
+  const add_confirmation = useSelector(
+    ({ getNotificationReducer }) => getNotificationReducer.getNotificationReducers
+  );
+  useEffect(()=>{
+    if (localStorage.token) {
+      setAuthorizationToken(localStorage.token)
+    }
+    dispatch(Actions.getNotification())
+  }, [])
+
+  useEffect(() => {
+    setIsSnackBar(false)
+    if (add_confirmation && add_confirmation.data && add_confirmation.data.success === true) {
+      setNotifications(add_confirmation.data.notifications)
+      setIsLoading(false)
+    }
+    else if (add_confirmation.isLoading) {
+      setIsLoading(true);
+    }
+    if (add_confirmation.errMsg) {
+      setIsSnackBar(true)
+      setSnackBarSverity("error")
+      setSnackBarMessage(add_confirmation.errMsg)
+      setIsLoading(false)
+    }
+  
+  }, [add_confirmation, dispatch]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -65,16 +107,20 @@ export default function CustomizedMenus() {
             open={Boolean(anchorEl)}
             onClose={handleClose}
         >
-            <StyledMenuItem>
-            <ListItemText primary="Ahsan send you requst to but book of calulus" />
-            </StyledMenuItem>
-            <StyledMenuItem>
-            <ListItemText primary="Ali send you request to buy programming book" />
-            </StyledMenuItem>
-            <StyledMenuItem>
-            <ListItemText primary="Hassan wants to buy book" />
-            </StyledMenuItem>
+          {
+            notifications && notifications.map((notifacation)=>{
+              return(
+                <StyledMenuItem>
+                  <ListItemText primary={notifacation.message} />
+                </StyledMenuItem>
+              )
+            })
+          }
+          {isLoading && <Loader />}
+          {isSnackbar && <SnackBarMsg snackBarSverity={snackBarSverity} snackBarMesssage={snackBarMesssage} setIsSnackBar={setIsSnackBar}/>}
         </StyledMenu>
     </div>
   );
 }
+
+export default withReducer("getNotificationReducer", reducer)(CustomizedMenus);
